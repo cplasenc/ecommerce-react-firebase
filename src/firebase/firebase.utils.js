@@ -14,6 +14,7 @@ const config = {
 
 firebase.initializeApp(config);
 
+//integración de firebase
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
