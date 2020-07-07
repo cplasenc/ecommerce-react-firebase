@@ -3,18 +3,47 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 const config = {
-    apiKey: process.env.REACT_APP_FIREBASE_API,
-    authDomain: "ecommerce-react-a8ad0.firebaseapp.com",
-    databaseURL: "https://ecommerce-react-a8ad0.firebaseio.com",
-    projectId: "ecommerce-react-a8ad0",
-    storageBucket: "ecommerce-react-a8ad0.appspot.com",
-    messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
-    appId: "1:97405622450:web:9d6e6595124c92b9cf51ab"
-  };
+  apiKey: process.env.REACT_APP_FIREBASE_API,
+  authDomain: "ecommerce-react-a8ad0.firebaseapp.com",
+  databaseURL: "https://ecommerce-react-a8ad0.firebaseio.com",
+  projectId: "ecommerce-react-a8ad0",
+  storageBucket: "ecommerce-react-a8ad0.appspot.com",
+  messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
+  appId: "1:97405622450:web:9d6e6595124c92b9cf51ab"
+};
 
 firebase.initializeApp(config);
 
-//integración de firebase
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+
+  if (!userAuth) {
+    return;
+  }
+
+  const userRef = firestore.doc(`users/${userAuth.uid}`);
+
+  const snapShot = await userRef.get();
+
+  if (!snapShot.exists) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+
+    try {
+      await userRef.set({
+        displayName,
+        email,
+        createdAt,
+        ...additionalData
+      })
+    } catch (error) {
+      console.log("error creating user", error.message);
+    }
+  }
+
+  return userRef;
+
+}
+
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
