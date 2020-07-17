@@ -9,7 +9,7 @@ const Directory = ({ sections }) => (
 
     <div className='directory-menu'>
         {
-            this.state.sections.map(({ id, title, imageUrl, linkUrl }) => (
+            sections.map(({ id, title, imageUrl, linkUrl }) => (
                 <MenuItem
                     key={id}
                     title={title}
